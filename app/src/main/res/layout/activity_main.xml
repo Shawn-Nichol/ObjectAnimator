@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="animation"
+            type="com.example.myanimation.MainActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <ImageView
+            android:id="@+id/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="5"
+            android:scaleY="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_android_black_24dp" />
+
+        <Button
+            android:id="@+id/btn_clockwise"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:onClick="@{(view) -> animation.clickCwRotate()}"
+            android:text="CW"
+            app:layout_constraintEnd_toStartOf="@+id/btn_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:onClick="@{() -> animation.clickColor()}"
+            android:text="Color"
+            app:layout_constraintEnd_toStartOf="@+id/btn_scale_x"
+            app:layout_constraintStart_toEndOf="@+id/btn_clockwise"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_scale_x"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="SCALE X"
+            android:onClick="@{() -> animation.clickScaleX()}"
+            app:layout_constraintEnd_toStartOf="@+id/button5"
+            app:layout_constraintStart_toEndOf="@+id/btn_color"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="FADE IN"
+            android:onClick="@{() -> animation.clickFadeIn()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_scale_x"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_scale_y"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="SCALE Y"
+            android:onClick="@{() -> animation.clickScaleY()}"
+            app:layout_constraintEnd_toEndOf="@+id/btn_scale_x"
+            app:layout_constraintStart_toStartOf="@+id/btn_scale_x"
+            app:layout_constraintTop_toBottomOf="@+id/btn_scale_x" />
+
+        <Button
+            android:id="@+id/btn_scale"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Scale"
+            android:onClick="@{() -> animation.clickScale()}"
+            app:layout_constraintEnd_toEndOf="@+id/btn_scale_y"
+            app:layout_constraintStart_toStartOf="@+id/btn_scale_y"
+            app:layout_constraintTop_toBottomOf="@+id/btn_scale_y" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FADE OUT"
+            android:onClick="@{() -> animation.clickFadeOut()}"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_scale_y"
+            app:layout_constraintEnd_toEndOf="@+id/button5"
+            app:layout_constraintStart_toStartOf="@+id/button5"
+            app:layout_constraintTop_toTopOf="@+id/btn_scale_y" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FADE"
+            android:onClick="@{() -> animation.clickFade()}"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_scale"
+            app:layout_constraintEnd_toEndOf="@+id/button3"
+            app:layout_constraintStart_toStartOf="@+id/button3"
+            app:layout_constraintTop_toTopOf="@+id/btn_scale" />
+
+        <Button
+            android:id="@+id/btn_counter_clockwise"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="CCW"
+            android:onClick="@{() -> animation.clickCcwRotate()}"
+            app:layout_constraintEnd_toEndOf="@+id/btn_clockwise"
+            app:layout_constraintStart_toStartOf="@+id/btn_clockwise"
+            app:layout_constraintTop_toBottomOf="@+id/btn_clockwise" />
+
+        <Button
+            android:id="@+id/btn_rotate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Rotate"
+            android:onClick="@{() -> animation.clickRotate()}"
+            app:layout_constraintEnd_toEndOf="@+id/btn_counter_clockwise"
+            app:layout_constraintStart_toStartOf="@+id/btn_counter_clockwise"
+            app:layout_constraintTop_toBottomOf="@+id/btn_counter_clockwise" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
