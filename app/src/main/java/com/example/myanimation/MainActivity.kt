@@ -1,14 +1,18 @@
 package com.example.myanimation
 
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
+import android.animation.*
 import android.animation.ValueAnimator.REVERSE
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.LinearInterpolator
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.DataBindingUtil
 import com.example.myanimation.databinding.ActivityMainBinding
 
@@ -202,7 +206,63 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun clickRiot() {
+        // The newAndroid images will all be drawn in this viewgroup.
+        val container = android.parent as ViewGroup
+        val containerX = container.width
+        val containerY = container.height
 
+        // The width and height of the original image.
+        var androidW: Float = android.width.toFloat()
+        var androidH: Float = android.height.toFloat()
+
+
+        var newAndroid = AppCompatImageView(this)
+        // The new image, that will be falling from the top
+        newAndroid.setImageResource(R.drawable.ic_android_black_24dp)
+
+        newAndroid.layoutParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT)
+        // add the android image to the container.
+        container.addView(newAndroid)
+
+        // determines the size of the android image
+        val scale = Math.random().toFloat() * 10f + .1f
+        newAndroid.scaleX = scale
+        newAndroid.scaleY = scale
+
+        // The new width and height of the android image.
+        androidW *= newAndroid.scaleX
+        androidH *= newAndroid.scaleY
+
+        // Translation dertermines where on the X axis the android image will fall from.
+        newAndroid.translationX = Math.random().toFloat() * containerX - androidW / 2
+
+        // Animator objects
+        val mover = ObjectAnimator.ofFloat(newAndroid, View.TRANSLATION_Y, -androidH, containerY + androidH)
+        mover.interpolator = AccelerateInterpolator(1f)
+        val rotator = ObjectAnimator.ofFloat(newAndroid, View.ROTATION, (Math.random() * 1000).toFloat())
+        rotator.interpolator = LinearInterpolator()
+
+
+        // AnimatorSet: plays a set of Animator objects in the specified order. Animation can be set
+        // to play together, in sequence, or after a specified delay.
+        val set = AnimatorSet().apply {
+            playTogether(mover, rotator)
+            duration = (Math.random() * 1500 + 500).toLong()
+
+            // this listener, is listening for when the animation on the androidView is done.
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    // When the animation ends remove the view from the ViewGroup.
+                    super.onAnimationEnd(animation)
+                    container.removeView(newAndroid)
+                }
+            })
+        }
+        set.start()
+    }
 
 
 
