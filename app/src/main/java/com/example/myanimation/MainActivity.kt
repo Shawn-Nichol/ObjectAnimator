@@ -41,6 +41,9 @@ class MainActivity : AppCompatActivity() {
     val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 10f)
 
 
+    lateinit var container: ViewGroup
+    var androidW: Float = 0f
+    var androidH: Float = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "onCreate")
@@ -51,6 +54,13 @@ class MainActivity : AppCompatActivity() {
         // This adds the expression from the xml, without it onClick doesn't work.
         binding.animation = this
         android = binding.android
+
+        container = android.parent as ViewGroup
+        androidW = android.width.toFloat()
+        androidH = android.height.toFloat()
+
+
+
         cwRotationDetails()
         ccwRotationDetails()
         rotationAnimationDetails()
@@ -71,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private  fun ccwRotationDetails() {
+    private fun ccwRotationDetails() {
         ccwRotationAnimator = ObjectAnimator.ofFloat(android, View.ROTATION, 720f, 0f).apply {
             duration = 2000
         }
@@ -87,13 +97,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun colorAnimationDetails() {
-        colorAnimator = ObjectAnimator.ofArgb(android.parent, "backgroundColor", Color.WHITE, Color.RED).apply {
-            duration = 2000
-            repeatCount = 3
-            // When the animation reaches th end and repeatCount is INFINITE or a positive value,
-            // the animation reverses direction on every iteration
-            repeatMode = REVERSE
-        }
+        colorAnimator =
+            ObjectAnimator.ofArgb(android.parent, "backgroundColor", Color.WHITE, Color.RED).apply {
+                duration = 2000
+                repeatCount = 3
+                // When the animation reaches th end and repeatCount is INFINITE or a positive value,
+                // the animation reverses direction on every iteration
+                repeatMode = REVERSE
+            }
     }
 
     private fun scaleXDetails() {
@@ -179,18 +190,18 @@ class MainActivity : AppCompatActivity() {
 
     fun clickFadeIn() {
         Log.i(TAG, "Fade In")
-        if(android.alpha == 0f) checkAnimation(fadeInAnimator)
+        if (android.alpha == 0f) checkAnimation(fadeInAnimator)
     }
 
     fun clickFadeOut() {
         Log.i(TAG, "Fade out")
-        if(android.alpha == 1f) checkAnimation(fadeOutAnimator)
+        if (android.alpha == 1f) checkAnimation(fadeOutAnimator)
     }
 
     fun clickFade() {
         Log.i(TAG, "Fade")
 
-        if(android.alpha == 1f) {
+        if (android.alpha == 1f) {
             Log.i(TAG, "android is visible")
 
             fadeAnimator = ObjectAnimator.ofFloat(android, View.ALPHA, 0f).apply {
@@ -206,29 +217,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun clickRiot() {
-        // The newAndroid images will all be drawn in this viewgroup.
-        val container = android.parent as ViewGroup
-        val containerX = container.width
-        val containerY = container.height
-
-        // The width and height of the original image.
-        var androidW: Float = android.width.toFloat()
-        var androidH: Float = android.height.toFloat()
-
-
+    fun createImage(): ImageView {
         var newAndroid = AppCompatImageView(this)
         // The new image, that will be falling from the top
         newAndroid.setImageResource(R.drawable.ic_android_black_24dp)
 
         newAndroid.layoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT)
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        )
         // add the android image to the container.
         container.addView(newAndroid)
 
         // determines the size of the android image
-        val scale = Math.random().toFloat() * 10f + .1f
+        val scale = Math.random().toFloat() * 4f + .1f
         newAndroid.scaleX = scale
         newAndroid.scaleY = scale
 
@@ -236,18 +238,11 @@ class MainActivity : AppCompatActivity() {
         androidW *= newAndroid.scaleX
         androidH *= newAndroid.scaleY
 
-        // Translation dertermines where on the X axis the android image will fall from.
-        newAndroid.translationX = Math.random().toFloat() * containerX - androidW / 2
+        return newAndroid
+    }
 
-        // Animator objects
-        val mover = ObjectAnimator.ofFloat(newAndroid, View.TRANSLATION_Y, -androidH, containerY + androidH)
-        mover.interpolator = AccelerateInterpolator(1f)
-        val rotator = ObjectAnimator.ofFloat(newAndroid, View.ROTATION, (Math.random() * 1000).toFloat())
-        rotator.interpolator = LinearInterpolator()
+    fun combineAnimation(mover: ObjectAnimator, rotator: ObjectAnimator, newAndroid: ImageView) {
 
-
-        // AnimatorSet: plays a set of Animator objects in the specified order. Animation can be set
-        // to play together, in sequence, or after a specified delay.
         val set = AnimatorSet().apply {
             playTogether(mover, rotator)
             duration = (Math.random() * 1500 + 500).toLong()
@@ -264,10 +259,115 @@ class MainActivity : AppCompatActivity() {
         set.start()
     }
 
+    fun clickRiot() {
+        // The newAndroid images will all be drawn in this viewgroup.
+
+        var x = 0
+        while (x < 4) {
+            val containerW = container.width
+            val containerH = container.height
+
+            val newAndroid: ImageView = createImage()
+
+            // translationX: Sets the horizontal translation of X
+            newAndroid.translationX = Math.random().toFloat() * containerW - androidW / 2
+
+            // Creates the animation of the object falling down the screen.
+            val mover = ObjectAnimator.ofFloat(
+                newAndroid,
+                View.TRANSLATION_Y,
+                -androidH,
+                containerH + androidH
+            )
+            mover.interpolator = AccelerateInterpolator(1f)
+
+            // Rotate the newAndroid image.
+            val rotator =
+                ObjectAnimator.ofFloat(newAndroid, View.ROTATION, (Math.random() * 1000).toFloat())
+            rotator.interpolator = LinearInterpolator()
+
+            combineAnimation(rotator, mover, newAndroid)
+            x++
+        }
+    }
+
+    fun clickLtoR() {
+        var x = 0
+
+        while (x < 4) {
+            val containerW = container.width
+            val containerH = container.height
+
+            val newAndroid: ImageView = createImage()
+
+            // Translation dertermines where on the X axis the android image will fall from.
+            newAndroid.translationY = Math.random().toFloat() * containerH - androidH / 2
+
+            // Creates the animation of the object falling down the screen.
+            val mover = ObjectAnimator.ofFloat(
+                newAndroid,
+                View.TRANSLATION_X,
+                -androidW,
+                containerW + androidW
+            )
+            // Speed at which the animation moves
+            mover.interpolator = AccelerateInterpolator(1f)
+
+            // Rotate the newAndroid image.
+            val rotator =
+                ObjectAnimator.ofFloat(newAndroid, View.ROTATION, (Math.random() * 1000).toFloat())
+            rotator.interpolator = LinearInterpolator()
+
+            combineAnimation(rotator, mover, newAndroid)
+            x++
+        }
+    }
+
+    fun clickRtoL() {
+        var x = 0
+
+        while (x < 4) {
+            val containerW = container.width
+            val containerH = container.height
+
+            val newAndroid: ImageView = createImage()
+
+            // Translation dertermines where on the Y axis the android image will start from.
+            newAndroid.translationY = Math.random().toFloat() * containerH - androidH / 2
+
+            // Creates the animation of the object falling down the screen.
+            val mover = ObjectAnimator.ofFloat(
+                newAndroid,
+                View.TRANSLATION_X,
+                + androidW + containerW,
+                androidW
+            )
+            mover.interpolator = AccelerateInterpolator(1f)
+
+            // Rotate the newAndroid image.
+            val rotator =
+                ObjectAnimator.ofFloat(newAndroid, View.ROTATION, (Math.random() * 1000).toFloat())
+            rotator.interpolator = LinearInterpolator()
+
+            combineAnimation(rotator, mover, newAndroid)
+            x++
+        }
+    }
+
+
+    fun clickChaos() {
+        var x = 0
+        while(x < 4) {
+            clickRiot()
+            clickLtoR()
+            clickRtoL()
+            x++
+        }
+    }
 
 
     private fun checkAnimation(animator: ObjectAnimator) {
-        if(animator.isStarted) Log.i(TAG, "$animator is running")
+        if (animator.isStarted) Log.i(TAG, "$animator is running")
         else animator.start()
     }
 }
