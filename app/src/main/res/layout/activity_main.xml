@@ -202,6 +202,17 @@
             app:layout_constraintHorizontal_bias="0.057"
             app:layout_constraintStart_toEndOf="@+id/btn_l_to_r" />
 
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="ALL ANIMATIONS"
+            android:onClick="@{() -> animation.clickAll()}"
+            app:layout_constraintEnd_toEndOf="@+id/button4"
+            app:layout_constraintStart_toStartOf="@+id/btn_rotate"
+            app:layout_constraintTop_toBottomOf="@+id/btn_scale" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fadeInAnimator: ObjectAnimator
     private lateinit var fadeOutAnimator: ObjectAnimator
     private lateinit var fadeAnimator: ObjectAnimator
+//    private lateinit var allAnimator: AnimatorSet
 
     // PropertyValuesHolder object: This class hold information about a property and the values that
     // property take on during an animation. PropertyValuesHolder object can be used to create animations
@@ -55,12 +56,12 @@ class MainActivity : AppCompatActivity() {
         binding.animation = this
         android = binding.android
 
+        // Used for the newAndroid animation.
         container = android.parent as ViewGroup
         androidW = android.width.toFloat()
         androidH = android.height.toFloat()
 
-
-
+        // Instantiates the animation, so the button can tell if the animation is running.
         cwRotationDetails()
         ccwRotationDetails()
         rotationAnimationDetails()
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         fadeInDetails()
         fadeOutDetails()
         fadeDetails()
+
 
     }
 
@@ -153,6 +155,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun allDetails() {
+        AnimatorSet().apply {
+            play(cwRotationAnimator)
+                .before(rotationAnimator)
+                .with(scaleAnimator)
+                .with(fadeAnimator)
+                .after(ccwRotationAnimator)
+                start()
+        }
+
+
+    }
+
     fun clickCwRotate() {
         Log.i(TAG, "cw rotation")
         checkAnimation(cwRotationAnimator)
@@ -160,7 +175,7 @@ class MainActivity : AppCompatActivity() {
 
     fun clickCcwRotate() {
         Log.i(TAG, "ccw rotation")
-        checkAnimation(ccwRotationAnimator)
+        checkAnimation(cwRotationAnimator)
     }
 
     fun clickRotate() {
@@ -216,6 +231,10 @@ class MainActivity : AppCompatActivity() {
         checkAnimation(fadeAnimator)
     }
 
+    fun clickAll() {
+        Log.i(TAG, "ALL animation")
+        allDetails()
+    }
 
     fun createImage(): ImageView {
         var newAndroid = AppCompatImageView(this)
@@ -406,6 +425,8 @@ class MainActivity : AppCompatActivity() {
             x++
         }
     }
+
+
 
 
     private fun checkAnimation(animator: ObjectAnimator) {
