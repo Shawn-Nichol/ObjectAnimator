@@ -259,7 +259,7 @@ class MainActivity : AppCompatActivity() {
         set.start()
     }
 
-    fun clickRiot() {
+    fun clickTtoB() {
         // The newAndroid images will all be drawn in this viewgroup.
 
         var x = 0
@@ -282,11 +282,47 @@ class MainActivity : AppCompatActivity() {
             mover.interpolator = AccelerateInterpolator(1f)
 
             // Rotate the newAndroid image.
-            val rotator =
-                ObjectAnimator.ofFloat(newAndroid, View.ROTATION, (Math.random() * 1000).toFloat())
+            val rotator = ObjectAnimator.ofFloat(
+                newAndroid,
+                View.ROTATION,
+                (Math.random() * 1000).toFloat()
+            )
             rotator.interpolator = LinearInterpolator()
 
             combineAnimation(rotator, mover, newAndroid)
+            x++
+        }
+    }
+
+    fun clickBtoT() {
+        var x = 0
+        while (x < 4) {
+            val containerW = container.width
+            val containerH = container.height
+
+            val newAndroid = createImage()
+
+            // Move newAndroid position along the X axis.
+            newAndroid.translationX = Math.random().toFloat() * containerW - androidW / 2
+
+            // create rising animation
+            val mover = ObjectAnimator.ofFloat(
+                newAndroid,
+                View.TRANSLATION_Y,
+                containerH + androidH,
+                -androidH
+            )
+            mover.interpolator = AccelerateInterpolator(1f)
+
+            // Rotate the newAndroid image
+            val rotator = ObjectAnimator.ofFloat(
+                newAndroid,
+                View.ROTATION,
+                (Math.random() * 1000).toFloat()
+            )
+
+            rotator.interpolator = LinearInterpolator()
+            combineAnimation(mover, rotator, newAndroid)
             x++
         }
     }
@@ -314,8 +350,11 @@ class MainActivity : AppCompatActivity() {
             mover.interpolator = AccelerateInterpolator(1f)
 
             // Rotate the newAndroid image.
-            val rotator =
-                ObjectAnimator.ofFloat(newAndroid, View.ROTATION, (Math.random() * 1000).toFloat())
+            val rotator = ObjectAnimator.ofFloat(
+                newAndroid,
+                View.ROTATION,
+                (Math.random() * 1000).toFloat()
+            )
             rotator.interpolator = LinearInterpolator()
 
             combineAnimation(rotator, mover, newAndroid)
@@ -339,14 +378,17 @@ class MainActivity : AppCompatActivity() {
             val mover = ObjectAnimator.ofFloat(
                 newAndroid,
                 View.TRANSLATION_X,
-                + androidW + containerW,
+                +androidW + containerW,
                 androidW
             )
             mover.interpolator = AccelerateInterpolator(1f)
 
             // Rotate the newAndroid image.
-            val rotator =
-                ObjectAnimator.ofFloat(newAndroid, View.ROTATION, (Math.random() * 1000).toFloat())
+            val rotator = ObjectAnimator.ofFloat(
+                newAndroid,
+                View.ROTATION,
+                (Math.random() * 1000).toFloat()
+            )
             rotator.interpolator = LinearInterpolator()
 
             combineAnimation(rotator, mover, newAndroid)
@@ -354,12 +396,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     fun clickChaos() {
         var x = 0
-        while(x < 4) {
-            clickRiot()
+        while (x < 4) {
+            clickTtoB()
             clickLtoR()
+            clickBtoT()
             clickRtoL()
             x++
         }
