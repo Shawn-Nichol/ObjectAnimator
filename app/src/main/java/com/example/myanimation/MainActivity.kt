@@ -33,7 +33,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fadeInAnimator: ObjectAnimator
     private lateinit var fadeOutAnimator: ObjectAnimator
     private lateinit var fadeAnimator: ObjectAnimator
-//    private lateinit var allAnimator: AnimatorSet
+    private lateinit var xaxisAnimator: ObjectAnimator
+    private lateinit var yaxisAnimator: ObjectAnimator
+
 
     // PropertyValuesHolder object: This class hold information about a property and the values that
     // property take on during an animation. PropertyValuesHolder object can be used to create animations
@@ -66,12 +68,15 @@ class MainActivity : AppCompatActivity() {
         ccwRotationDetails()
         rotationAnimationDetails()
         colorAnimationDetails()
+        xaxisDetails()
+        yaxisDetails()
         scaleXDetails()
         scaleYDetails()
         scaleDetails()
         fadeInDetails()
         fadeOutDetails()
         fadeDetails()
+
 
 
     }
@@ -107,6 +112,18 @@ class MainActivity : AppCompatActivity() {
                 // the animation reverses direction on every iteration
                 repeatMode = REVERSE
             }
+    }
+
+    private fun xaxisDetails() {
+        xaxisAnimator = ObjectAnimator.ofFloat(android, View.ROTATION_X, -720f, 0f).apply {
+            duration = 2000
+        }
+    }
+
+    private fun yaxisDetails() {
+        yaxisAnimator = ObjectAnimator.ofFloat(android, View.ROTATION_Y, -720f, 0f).apply {
+            duration = 2000
+        }
     }
 
     private fun scaleXDetails() {
@@ -160,8 +177,13 @@ class MainActivity : AppCompatActivity() {
             play(cwRotationAnimator)
                 .before(rotationAnimator)
                 .with(scaleAnimator)
+                .with(xaxisAnimator)
+                .with(yaxisAnimator)
                 .with(fadeAnimator)
                 .after(ccwRotationAnimator)
+
+
+
                 start()
         }
 
@@ -186,6 +208,14 @@ class MainActivity : AppCompatActivity() {
     fun clickColor() {
         Log.i(TAG, "Color")
         checkAnimation(colorAnimator)
+    }
+
+    fun clickXaxis() {
+        checkAnimation(xaxisAnimator)
+    }
+
+    fun clickYaxis() {
+        checkAnimation(yaxisAnimator)
     }
 
     fun clickScaleX() {

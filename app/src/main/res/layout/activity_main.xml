@@ -207,11 +207,35 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="ALL ANIMATIONS"
             android:onClick="@{() -> animation.clickAll()}"
+            android:text="ALL ANIMATIONS"
             app:layout_constraintEnd_toEndOf="@+id/button4"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/btn_rotate"
             app:layout_constraintTop_toBottomOf="@+id/btn_scale" />
+
+        <Button
+            android:id="@+id/btn_x_axis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="X Axis"
+            android:onClick="@{() -> animation.clickXaxis()}"
+            app:layout_constraintEnd_toStartOf="@+id/btn_scale_y"
+            app:layout_constraintStart_toEndOf="@+id/btn_counter_clockwise"
+            app:layout_constraintTop_toBottomOf="@+id/btn_color" />
+
+        <Button
+            android:id="@+id/button10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Y Axis"
+            android:onClick="@{() -> animation.clickYaxis()}"
+            app:layout_constraintEnd_toStartOf="@+id/btn_scale"
+            app:layout_constraintHorizontal_bias="0.523"
+            app:layout_constraintStart_toEndOf="@+id/btn_rotate"
+            app:layout_constraintTop_toBottomOf="@+id/btn_x_axis" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
